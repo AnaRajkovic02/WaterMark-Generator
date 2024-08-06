@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Watermark Generator</title>
+    <!-- Import Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Import jspdf library for download PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/arabicjs"></script>
+
+    <script src="./assets/js/arial.js"></script>
+    <script src="./assets/js/cairo.js"></script>
+    <script src="./assets/js/albert.js"></script>
+    <!-- Import Custom CSS -->
+    <link href="./assets/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm">
+      <div class="container-fluid">
+        <img
+          src="./assets/img/Logo_two-BAo_T1ib.svg"
+          alt="Logo_two-BAo_T1ib"
+          class="logo"
+        />
+        <h3 class="mb-0">PDF Watermark Generator</h3>
+        <img
+          src="./assets/img/coca-D079qK2H.svg"
+          alt="coca-D079qK2H"
+          class="coca-D079qK2H"
+        />
+      </div>
+    </nav>
+    <div class="main-container">
+      <div class="data-recording-container">
+        <div
+          class="data-recording-header text-center text-white d-flex justify-content-center align-items-center gap-2"
+        >
+          <h5 class="mb-0" dir="rtl">Data recording</h5>
+          <img src="./assets/img/edit.png" alt="edit" />
+        </div>
+        <div class="data-recording-body p-5">
+          <h5 class="text-primary fw-bold" dir="rtl">the address</h5>
+          <input
+            type="text"
+            class="form-control pdf-text"
+            id="pdf-text"
+            placeholder="Write something here..."
+            name="pdf-text"
+            dir="rtl"
+          />
+          <h5 class="text-primary fw-bold mt-2" dir="rtl">
+            Select font format
+          </h5>
+          <div class="data-direction mt-3">
+            <div class="radiobuttons d-flex justify-content-around">
+              <div class="rdio rdio-primary radio-inline">
+                <input
+                  name="font-radio"
+                  value="1"
+                  id="font-radio1"
+                  type="radio"
+                  checked
+                />
+                <label for="font-radio1" class="text-primary fw-bold"
+                  >Arial</label
+                >
+              </div>
+              <div class="rdio rdio-primary radio-inline">
+                <input
+                  name="font-radio"
+                  value="2"
+                  id="font-radio2"
+                  type="radio"
+                />
+                <label for="font-radio2" class="text-primary fw-bold"
+                  >Cairo</label
+                >
+              </div>
+              <!-- <div class="rdio rdio-primary radio-inline">
+                <input
+                  name="font-radio"
+                  value="3"
+                  id="font-radio3"
+                  type="radio"
+                />
+                <label for="font-radio3" class="text-primary fw-bold"
+                  >FS Albert</label
+                >
+              </div> -->
+            </div>
+          </div>
+          <div class="data-direction mt-3">
+            <div class="radiobuttons d-flex justify-content-between">
+              <div class="rdio rdio-primary radio-inline">
+                <input
+                  name="radio"
+                  value="1"
+                  id="radio1"
+                  type="radio"
+                  checked
+                />
+                <label for="radio1" class="text-primary fw-bold"
+                  >Degrees 45</label
+                >
+              </div>
+              <div class="rdio rdio-primary radio-inline">
+                <input name="radio" value="2" id="radio2" type="radio" />
+                <label for="radio2" class="text-primary fw-bold"
+                  >Vertical</label
+                >
+              </div>
+              <div class="rdio rdio-primary radio-inline">
+                <input name="radio" value="3" id="radio3" type="radio" />
+                <label for="radio3" class="text-primary fw-bold"
+                  >Horizontal</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="data-recording-footer text-center mt-4">
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="download-pdf"
+              dir="rtl"
+            >
+              Create PDF Watermark
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("download-pdf")
+        .addEventListener("click", async function () {
+          if (document.getElementById("pdf-text").value) {
+            // Get all radio buttons with the name 'radio'
+            const radios = document.querySelectorAll('input[name="radio"]');
+            const fontRadios = document.querySelectorAll(
+              'input[name="font-radio"]'
+            );
+
+            // Iterate through the radio buttons to find the checked one
+            var selectedValue;
+            radios.forEach((radio) => {
+              if (radio.checked) {
+                selectedValue = radio.value;
+              }
+            });
+
+            var selectedFont;
+            fontRadios.forEach((radio) => {
+              if (radio.checked) {
+                selectedFont = radio.value;
+              }
+            });
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({compress: true});
+
+            // Initialize variables
+            var content = document.getElementById("pdf-text").value;
+            var fontSize = 8; // Set font size
+            var lineHeight = fontSize * 0.3528; // 1 point = 0.3528 mm
+            var lineWidth = lineHeight / 2;
+            var textLength = lineWidth; // Get the length of the word
+            var pageWidth = doc.internal.pageSize.width; // Get page width
+            var pageHeight = doc.internal.pageSize.height; // Get page height
+            var lines = [];
+
+            doc.addFileToVFS("arial.ttf", arialFont);
+            doc.addFont("arial.ttf", "arial", "normal");
+            doc.addFileToVFS("Cairo-Regular.ttf", cairoFont);
+            doc.addFont("Cairo-Regular.ttf", "Cairo-Regular", "normal");
+            doc.addFileToVFS("FSAlbert Regular.otf", albertFont);
+            doc.addFont("FSAlbert Regular.otf", "FSAlbert", "normal");
+            if (selectedFont === "1") {
+              doc.setFont("arial");
+            } else if (selectedFont === "2") {
+              doc.setFont("Cairo-Regular");
+            } else {
+              doc.setFont("arial");
+            }
+
+            doc.setFontSize(fontSize); // Set font size
+            doc.setTextColor(9, 124, 114); // Set text color
+
+            if (selectedValue === "1") {
+              // In case of Vertical 45
+              pageWidth = pageWidth * 1.5;
+              pageHeight = pageWidth * 2;
+              // Get the whole sentence
+              for (var i = 0; i < pageHeight / textLength; i++) {
+                var _lines = "";
+                for (var j = 0; j < pageWidth / lineHeight; j++) {
+                  _lines += "        " + content;
+                }
+                lines.push(_lines);
+              }
+              const angle = 45; // Rotate counterclockwise by 90 degrees
+              const radians = angle * (Math.PI / 180); // Convert angle to radians
+
+              // Add lines to the PDF
+              lines.forEach((line, index) => {
+                const x = index * (lineHeight + 5); // Adjust x for vertical placement
+                doc.text(line, 0, x, {
+                  angle: angle,
+                  align: "left",
+                  baseline: "bottom",
+                });
+              });
+            } else if (selectedValue === "2") {
+              // In case of Vertical
+              // Get the whole sentence
+              for (var i = 0; i < pageHeight / textLength; i++) {
+                var _lines = "";
+                for (var j = 0; j < pageWidth / lineHeight; j++) {
+                  _lines += "        " + content;
+                }
+                lines.push(_lines);
+              }
+              const angle = -90; // Rotate counterclockwise by 90 degrees
+              const radians = angle * (Math.PI / 180); // Convert angle to radians
+
+              // Add lines to the PDF
+              lines.forEach((line, index) => {
+                const x = index * (lineHeight + 5); // Adjust x for vertical placement
+                doc.text(line, x, 0, {
+                  angle: angle,
+                  align: "left",
+                  baseline: "bottom",
+                });
+              });
+            } else {
+              // In case of horizontal
+              // Get the whole sentence
+              for (var i = 0; i < pageHeight / lineHeight; i++) {
+                var _lines = "";
+                for (var j = 0; j < pageWidth / textLength; j++) {
+                  _lines += "        " + content;
+                }
+                lines.push(_lines);
+              }
+
+              // Add lines to the PDF
+              var y = 0;
+              lines.forEach((line, index) => {
+                doc.text(line, 0, y); // Write the text
+                y = index * (lineHeight + 5); // Move the y position for the next line
+              });
+            }
+            // Save the PDF
+            doc.save(content + ".pdf");
+          }
+        });
+    </script>
+  </body>
+</html>

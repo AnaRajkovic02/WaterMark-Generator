@@ -1,0 +1,128 @@
+:root {
+  /* Set root value */
+  --primary: #097c72; /* Set primary color, you can change main color with change this value */
+  --white: #ffffff;
+  --light-gray: #f0f0f0;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+nav {
+  background-color: var(--primary);
+  height: 90px;
+}
+
+nav .logo {
+  width: 60px;
+}
+
+nav h3 {
+  color: var(--white);
+  font-style: italic;
+}
+
+.main-container {
+  background-color: var(--light-gray);
+  width: 100%;
+  min-height: calc(100vh - 90px);
+  padding-top: 3rem;
+}
+
+.main-container .data-recording-container {
+  max-width: 600px;
+  margin-inline: auto;
+  border-radius: 10px;
+  background-color: var(--white);
+}
+
+.main-container .data-recording-container .data-recording-header {
+  background-color: var(--primary);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 10px;
+}
+
+.main-container .data-recording-container .data-recording-header img {
+  width: 30px;
+}
+
+.main-container .data-recording-container .data-recording-body .pdf-text {
+  box-shadow: none;
+  border-color: var(--primary);
+}
+
+.main-container .data-recording-container .data-recording-footer button {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  font-size: 20px;
+  padding-inline: 20px;
+}
+
+/* Radio button Custom styles */
+.rdio {
+  position: relative;
+  input[type="radio"] {
+    opacity: 0;
+  }
+  label {
+    padding-left: 10px;
+    cursor: pointer;
+    margin-bottom: 7px !important;
+    &:before {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      top: 1px;
+      left: 0;
+      content: "";
+      display: inline-block;
+      -moz-border-radius: 50px;
+      -webkit-border-radius: 50px;
+      border-radius: 50px;
+      border: 1px solid var(--primary);
+      background: #fff;
+    }
+  }
+  input[type="radio"] {
+    margin: 0px;
+    &:disabled + label {
+      color: #999;
+      &:before {
+        background-color: var(--primary);
+      }
+    }
+    &:checked + label::after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 4px;
+      display: inline-block;
+      font-size: 11px;
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary);
+      -moz-border-radius: 50px;
+      -webkit-border-radius: 50px;
+      border-radius: 50px;
+    }
+  }
+}
+
+.rdio-default input[type="radio"]:checked + label:before {
+  border-color: var(--primary);
+}
+
+.rdio-primary input[type="radio"]:checked + label {
+  &:before {
+    border-color: var(--primary);
+  }
+  &::after {
+    background-color: var(--primary);
+  }
+}

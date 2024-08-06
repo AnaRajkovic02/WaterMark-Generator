@@ -1,0 +1,44 @@
+:root {
+  /* Set root value */
+  --primary: #097c72; /* Set primary color, you can change main color with change this value */
+  --white: #ffffff;
+  --light-gray: #f0f0f0;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+nav {
+  background-color: var(--primary);
+  height: 90px;
+}
+
+nav .logo {
+  width: 60px;
+}
+
+nav h3 {
+  color: var(--white);
+  font-style: italic;
+}
+
+.main-container {
+  background-color: var(--light-gray);
+  width: 100%;
+  min-height: calc(100vh - 90px);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.box-body {
+    height: 200px;
+}
+
+.box-table-body {
+    height: 480px;
+}
